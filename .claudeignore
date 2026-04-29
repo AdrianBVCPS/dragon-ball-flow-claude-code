@@ -1,0 +1,14 @@
+# Capsule Corp Flow — .claudeignore
+# Excluir archivos que Claude no necesita leer (ahorro de tokens)
+
+node_modules/
+.next/
+dist/
+build/
+coverage/
+*.log
+*.lock
+.env
+.env.local
+.env.production
+.DS_Store
