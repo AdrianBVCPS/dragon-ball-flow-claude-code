@@ -1,0 +1,25 @@
+# Windows
+desktop.ini
+Thumbs.db
+*.lnk
+
+# Node
+node_modules/
+.next/
+
+# Env
+.env
+.env.local
+.env*.local
+
+# Build
+dist/
+out/
+build/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
