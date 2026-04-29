@@ -74,7 +74,7 @@ El flujo usa `opusplan`: **Opus planifica, Sonnet ejecuta**. Esto reduce el cost
 | Base de datos | Supabase (PostgreSQL + RLS) |
 | Auth | Supabase Auth |
 | Deploy | Vercel (gratuito) |
-| Modelos | Opus 4.7 (plan) + Sonnet 4.5 (ejecución) |
+| Modelos | Opus 4.7 (plan) + Sonnet 4.6 (ejecución) |
 
 > El flujo también soporta **proyectos legacy** (Electron o HTML/JS/CSS puro sin dependencias externas).
 
@@ -289,7 +289,7 @@ El stack es 100% gratuito (Vercel free tier + Supabase free tier). El único cos
 Sí. Copia los archivos `.claude/` a tu proyecto y ajusta el `CLAUDE.md` con el contexto de tu proyecto actual.
 
 **¿Qué modelos usa?**
-Por defecto: **Opus 4.7** para planificación (Bulma), **Sonnet 4.5** para ejecución (subagentes). Puedes ajustar con `/effort xhigh` para tareas críticas con Opus 4.7.
+Por defecto: **Opus 4.7** para planificación (Bulma), **Sonnet 4.6** para ejecución (subagentes). Puedes ajustar con `/effort xhigh` para tareas críticas con Opus 4.7.
 
 **¿Por qué los personajes de Dragon Ball?**
 Porque los nombres son memorables y cada personaje tiene una personalidad que encaja perfectamente con su rol técnico. Whis (el Auditor) es imparcial y está por encima de todos. Goku (Backend) es potente pero impulsivo — necesita que Bulma le dirija. Vegeta (Frontend) es perfeccionista con el diseño.
