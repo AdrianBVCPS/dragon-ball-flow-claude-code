@@ -70,4 +70,14 @@ Usa `/usage` para ver qué herramientas y contexto están consumiendo tus límit
 
 ## Documentación bajo demanda
 
-@docs/PRD.md · @docs/convenciones-supabase.md · @docs/checklist-despliegue.md · 
+@docs/PRD.md · @docs/convenciones-supabase.md · @docs/checklist-despliegue.md · @docs/agent-teams.md · @REVIEW.md
+
+## Utilidades de mantenimiento
+
+- `claude project purge [path]` — elimina todo el estado Claude de un proyecto (transcripts, tasks, historial). Usa `--dry-run` primero.
+- `--plugin-dir` acepta `.zip` directamente — comparte skills como archivo zip sin descomprimir.
+- Worktrees (isolation): `EnterWorktree` ahora crea la branch desde HEAD local (commits no pusheados ya no se pierden).
+
+## NUNCA
+
+Dependencias de pago sin OK · Refactor masivo sin avisar · `--force` en git · Tablas sin RLS · Delegar tareas triviales a subagentes

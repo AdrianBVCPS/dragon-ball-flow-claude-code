@@ -2,49 +2,49 @@
 
 ## Resumen ejecutivo
 
-Claude Code incorporó `/ultrareview` (code review paralelo multi-agente en la nube), `/usage` para monitoreo de límites de contexto, y mejoras importantes en el sistema de hooks (duración de ejecución `duration_ms`, llamadas directas a herramientas MCP desde hooks, y opción `alwaysLoad` para MCP servers). Se actualiza el flujo de v8.1 a v8.2 y se regenera la skill.
-
-## Novedades aplicadas
-
-### 1. `/ultrareview` — Code review paralelo multi-agente en la nube
-- **Fuente:** [Claude Code Changelog](https://code.claude.com/docs/en/changelog)
-- **Qué es:** Ejecuta múltiples agentes revisores en paralelo sobre el código en la nube. Más rápido y exhaustivo que una sola pasada.
-- **Impacto en el flujo:** Alternativa cloud a @whis para proyectos con cambios grandes. Complementa el flujo de revisión sin bloquear la sesión local.
-- **Acción aplicada:** Regla 4 de Reglas universales actualizada en CLAUDE.md y SKILL.md. Añadido a sección Monitor.
-
-### 2. `/usage` — Monitor de consumo de contexto
-- **Fuente:** [Claude Code Changelog](https://code.claude.com/docs/en/changelog)
-- **Qué es:** Muestra en tiempo real qué herramientas y contexto están consumiendo los límites del modelo.
-- **Impacto en el flujo:** Útil para Adrian cuando la sesión crece mucho o detecta lentitud. Complementa `/monitor`.
-- **Acción aplicada:** Añadido a sección "Monitor de background y uso" en CLAUDE.md y SKILL.md.
-
-### 3. Hooks: `duration_ms` en PostToolUse
-- **Fuente:** [Claude Code Changelog](https://code.claude.com/docs/en/changelog)
-- **Qué es:** Los hooks PostToolUse ahora incluyen `duration_ms` (tiempo de ejecución de la herramienta, excluyendo prompts de permisos). Permite hooks de performance monitoring.
-- **Impacto en el flujo:** Capacidad disponible para añadir métricas de rendimiento a hooks futuros. Sin cambio inmediato en settings.json.
-- **Acción aplicada:** Documentado. No se modifica settings.json hasta que haya un caso de uso concreto.
-
-### 4. Hooks: llamadas directas a herramientas MCP (`type: "mcp_tool"`)
-- **Fuente:** [Claude Code Changelog](https://code.claude.com/docs/en/changelog)
-- **Qué es:** Los hooks pueden invocar herramientas MCP directamente sin spawnar un proceso externo. Formato: `{ "type": "mcp_tool", ... }`.
-- **Impacto en el flujo:** Cuando se integren MCPs (Slack, Supabase, etc.), los hooks podrán notificar o registrar eventos automáticamente.
-- **Acción aplicada:** Documentado para uso futuro. Relevante cuando @trunks gestione deployments con MCPs.
-
-### 5. `alwaysLoad` para MCP servers + auto-retry
-- **Fuente:** [Claude Code Changelog](https://code.claude.com/docs/en/changelog)
-- **Qué es:** Nueva opción `alwaysLoad: true` en la config de MCP servers para que sus herramientas siempre estén disponibles sin esperar tool-search. Además, MCP servers reintentan hasta 3 veces en errores de arranque transitorios.
-- **Impacto en el flujo:** Para proyectos Tipo A con MCPs críticos (ej. Supabase MCP), activar `alwaysLoad` evita latencia en la primera llamada.
-- **Acción aplicada:** Documentado. Aplicar en settings.json cuando se integren MCPs en proyectos concretos.
-
-### 6. Claude Opus 4.7 GA (confirmado)
-- **Fuente:** [Introducing Claude Opus 4.7](https://www.anthropic.com/news/claude-opus-4-7)
-- **Qué es:** Opus 4.7 es GA desde el 16 de abril de 2026. Mejora significativa en agentic coding y visión de alta resolución. API string: `claude-opus-4-7`.
-- **Impacto en el flujo:** El flujo ya usa Opus 4.7 como planificador (opusplan). Confirmado correcto.
-- **Acción aplicada:** Sin cambios — ya estaba actualizado en v8.0.
+Esta semana Claude Code lanzó dos versiones menores (2.1.126 y 2.1.128) con mejoras de calidad de vida: el nuevo comando `claude project purge` para limpiar estado de proyectos, una corrección crítica en worktrees que preserva commits no pusheados, y soporte para distribuir skills como archivos `.zip`. Cambios conservadores aplicados en la v8.2.
 
 ---
 
-*Generado el 2026-05-05 · Dragon Ball Flow v8.2 · Sonnet 4.6 ejecuta, Opus 4.7 planifica*
+## Novedades aplicadas
+
+### 1. `claude project purge` — limpieza de estado de proyectos
+- **Fuente:** [Claude Code Changelog v2.1.126](https://code.claude.com/docs/en/changelog)
+- **Qué es:** Nuevo comando que elimina todo el estado Claude de un proyecto: transcripts, tasks, historial de archivos y entrada de config. Soporta `--dry-run`, `--interactive` y `--all`.
+- **Impacto en el flujo:** Útil para resetear el contexto de un proyecto sin borrar el código. Especialmente útil entre fases largas donde los transcripts acumulan ruido.
+- **Acción aplicada:** Añadido a nueva sección "Utilidades de mantenimiento" en CLAUDE.md y SKILL.md.
+
+### 2. `EnterWorktree` crea branch desde HEAD local
+- **Fuente:** [Claude Code Changelog v2.1.128](https://code.claude.com/docs/en/changelog)
+- **Qué es:** Corrección crítica: `EnterWorktree` (modo isolation de subagentes) ahora crea la nueva branch desde el HEAD local en lugar de `origin/<default-branch>`. Los commits no pusheados ya no se pierden al entrar en un worktree.
+- **Impacto en el flujo:** Cuando @trunks o @goku usan isolation con `worktree`, el trabajo no confirmado del desarrollador ya no se descarta silenciosamente. Mayor seguridad en flujos de branches.
+- **Acción aplicada:** Añadido en sección "Utilidades de mantenimiento" en CLAUDE.md y SKILL.md.
+
+### 3. `--plugin-dir` acepta archivos `.zip`
+- **Fuente:** [Claude Code Changelog v2.1.128](https://code.claude.com/docs/en/changelog)
+- **Qué es:** El flag `--plugin-dir` ahora acepta directamente archivos `.zip` además de directorios. Simplifica la distribución de plugins/skills empaquetados.
+- **Impacto en el flujo:** El archivo `capsule-corp-flow.skill` (que es un zip) puede ahora cargarse directamente con `--plugin-dir capsule-corp-flow.skill` sin descomprimir. Facilita la distribución.
+- **Acción aplicada:** Documentado en CLAUDE.md y SKILL.md.
+
+### 4. Fix: deferred tools disponibles en skills `context: fork`
+- **Fuente:** [Claude Code Changelog v2.1.126](https://code.claude.com/docs/en/changelog)
+- **Qué es:** Corrección de bug: las herramientas deferred (WebSearch, WebFetch, etc.) no estaban disponibles para skills con `context: fork` y subagentes en su primer turno.
+- **Impacto en el flujo:** Whis y otros subagentes que usen skills forkeadas ahora tienen acceso completo a todas las herramientas desde el primer turno, sin fallos silenciosos.
+- **Acción aplicada:** Solo documentado — no requiere cambios en CLAUDE.md.
+
+---
+
+## Modelos — sin cambios esta semana
+
+Los modelos activos del flujo siguen siendo:
+- **Planificación (Bulma):** Opus 4.7 vía `opusplan`
+- **Ejecución (Z Warriors):** Sonnet 4.6 [1m]
+
+Nota: Se detectó la existencia del modelo experimental **Mythos** (Anthropic) en fase de acceso limitado por capacidades de ciberseguridad avanzadas. No disponible públicamente. Sin impacto en el flujo actual.
+
+---
+
+*Generado automáticamente el 5 de mayo de 2026 · Dragon Ball Flow v8.2 · Sonnet 4.6 ejecuta, Opus 4.7 planifica*
 
 ---
 
