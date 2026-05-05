@@ -1,4 +1,4 @@
-# CLAUDE.md — Dragon Ball Flow v8.0
+# CLAUDE.md — Dragon Ball Flow v8.2
 
 ## Tu rol (Bulma)
 
@@ -47,7 +47,7 @@ Adrian puede invocar subagentes directamente con `@nombre` en el prompt.
 1. RLS en TODAS las tablas. Nunca hardcodear secrets. Sin `any` no justificado.
 2. Commits en español tras cada tarea: `tipo: descripción`
 3. Tests relevantes antes de completar tareas. Validación Zod en cliente Y servidor.
-4. Code Review antes de deploy: @whis o `/code-review`. Reglas en @REVIEW.md
+4. Code Review antes de deploy: @whis (background) o `/ultrareview` (paralelo en la nube). Reglas en @REVIEW.md
 5. Skeletons/spinners mientras cargan datos. Comenta código en español.
 6. Usar checkpoints antes de cambios grandes: guarda estado para poder revertir.
 7. `/autofix-pr` activado por @trunks en PRs con tests fallidos.
@@ -63,14 +63,11 @@ Adrian puede invocar subagentes directamente con `@nombre` en el prompt.
 - Preservar: decisiones de arquitectura de docs/decisions/
 - Preservar: estado de cada subagente y tareas pendientes
 
-## Monitor de background
+## Monitor de background y uso
 
 Usa `/monitor` para visualizar en tiempo real los eventos de subagentes en background (Whis, builds, tests). Útil para seguir el progreso sin interrumpir el flujo.
+Usa `/usage` para ver qué herramientas y contexto están consumiendo tus límites — útil cuando el contexto crece mucho o notas lentitud.
 
 ## Documentación bajo demanda
 
-@docs/PRD.md · @docs/convenciones-supabase.md · @docs/checklist-despliegue.md · @docs/agent-teams.md · @REVIEW.md
-
-## NUNCA
-
-Dependencias de pago sin OK · Refactor masivo sin avisar · `--force` en git · Tablas sin RLS · Delegar tareas triviales a subagentes
+@docs/PRD.md · @docs/convenciones-supabase.md · @docs/checklist-despliegue.md · 
